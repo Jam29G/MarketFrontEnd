@@ -1,0 +1,14 @@
+.thumb {
+  width: 80px;
+}
+
+.thumb-minus {
+  width: 50px;
+}
+
+.table-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

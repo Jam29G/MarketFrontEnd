@@ -1,0 +1,21 @@
+<p-menubar *ngIf="authService.auth != undefined && authService.isAdmin" [model]="authItems">
+  <ng-template pTemplate="start">
+    <img src="./favicon.ico" alt="" height="40" class="mr-3">
+  </ng-template>
+  
+</p-menubar>
+
+<p-menubar *ngIf="authService.auth == undefined" [model]="defaultItems">
+  <ng-template pTemplate="start">
+    <img src="./favicon.ico" alt="" height="40" class="mr-3">
+  </ng-template>
+  
+</p-menubar>
+
+<p-menubar *ngIf="authService.auth != undefined && !authService.isAdmin" [model]="userItems">
+  <ng-template pTemplate="start">
+    <img src="./favicon.ico" alt="" height="40" class="mr-3">
+  </ng-template>
+  
+</p-menubar>
+

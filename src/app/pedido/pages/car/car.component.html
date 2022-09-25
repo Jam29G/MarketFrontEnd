@@ -1,0 +1,38 @@
+<div class="mt-4">
+  <button [type]="'submit'" [disabled]="detallePedidos.length < 1" (click)="save()" pButton pRipple type="button" label="Realizar pedido" icon="pi pi-save" class="p-button-success"></button>
+  <p-table [value]="detallePedidos" responsiveLayout="scroll">
+      
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Productos</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Eliminar</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-detalle >
+        <tr>
+            <td>{{detalle.producto?.nombre}}</td>
+            <td>{{detalle.producto?.precio | currency:"USD":"symbol" }}</td>
+            <td>{{detalle.cantidad}}</td>
+            <td>{{ detalle.producto?.precio! * detalle.cantidad! | currency:"USD":"symbol" }}</td>
+            <td>
+              <button 
+              pButton pRipple type="button" 
+              (click)="deleteDetalle(detalle.id)" 
+              icon="pi pi-times-circle" 
+              class="p-button-danger"
+              >
+              </button>
+            </td>
+
+        </tr>
+    </ng-template>
+
+  </p-table>
+  <div>
+    <h3 class="ms-3">Total: {{totalPedido | currency:"USD":"symbol" }}</h3>
+  </div>
+
+</div>

@@ -1,0 +1,210 @@
+<h2>Administrar productos</h2>
+
+<div class="table">
+  <!--Tabla-->
+  <p-table #dt
+  [value]="productos"
+  responsiveLayout="scroll" 
+  [rowHover]="true"
+  [paginator]="true"
+  [rows]="5"
+  [rowsPerPageOptions]="[5,10,15]"
+  [globalFilterFields]="['id','nombre', 'categoria']"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+  dataKey="id"
+  class="table"
+  > 
+  
+
+  <!--Caption-->
+  <ng-template pTemplate="caption">
+    <div class="table-header">
+        <h2>Lista de productos</h2>
+        <div>
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"  placeholder="Buscar" />
+          </span>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <button icon="pi pi-plus-circle" class="d-block me-3" pButton pRipple type="button" (click)="showDialog('crear')" label="Agregar"></button>
+      <div>
+        <p-checkbox [(ngModel)]="mostrarInactivos" (onChange)="mostrarProductos()" class="mt-3 mr-2" [binary]="true" inputId="binary"></p-checkbox>
+        <label for="binary">Ver inactivos</label>
+      </div>
+    </div>
+
+  </ng-template>
+  <!--end Caption-->
+
+  <!--Header-->
+  <ng-template pTemplate="header">
+    <tr>
+      <th>ID</th>
+      <th pSortableColumn="nombre">
+        Nombre
+        <p-sortIcon field="nombre"></p-sortIcon>
+        <p-columnFilter type="text" field="nombre" display="menu" class="ml-auto"></p-columnFilter>
+      </th>
+      <th>Descripcion</th>
+      <th>Imagen</th>
+      <th pSortableColumn="precio">
+        Precio
+        <p-sortIcon field="precio"></p-sortIcon>
+        <p-columnFilter type="numeric" currency="USD" field="precio" display="menu" class="ml-auto"></p-columnFilter>
+      </th>
+      <th pSortableColumn="existencia">
+        Cantidad
+        <p-sortIcon field="existencia"></p-sortIcon>
+        <p-columnFilter type="numeric" field="existencia" display="menu" class="ml-auto"></p-columnFilter>
+      </th>
+      <th pSortableColumn="categoria">
+        Categoria
+        <p-sortIcon field="categoria"></p-sortIcon>
+        <p-columnFilter type="text" field="categoria" display="menu" class="ml-auto"></p-columnFilter>
+      </th>
+      <th >Acciones</th>
+    </tr>
+  </ng-template>
+  <!--End Header-->
+
+  <!--Cuerpo-->
+  <ng-template pTemplate="body" let-producto>
+    <tr>
+        <td>{{producto.id}}</td>
+        <td>{{producto.nombre}}</td>
+        <td>{{producto.descripcion}}</td>
+        <td><img class="thumb" [src]="imagePath + '/' + producto.imagen" alt=""></td>
+        <td>{{producto.precio | currency:"USD":"symbol"}}</td>
+        <td>{{producto.cantidad}}</td>
+        <td>{{producto.categoria.nombre}}</td>
+        
+        <td>
+          <button 
+            *ngIf="!mostrarInactivos"
+            pButton pRipple type="button" 
+            (click)="showDialog('actualizar', producto.id)"
+            icon="pi pi-pencil" 
+            class="p-button-primary mr-2"
+          >
+          </button>
+          <button 
+            *ngIf="!mostrarInactivos"
+            pButton pRipple type="button" 
+            (click)="delete(producto.id)" 
+            icon="pi pi-times-circle" 
+            class="p-button-danger mr-2"
+          >
+          </button>
+          <button 
+            *ngIf="mostrarInactivos"
+            pButton pRipple type="button" 
+            (click)="restore(producto.id)" 
+            icon="pi pi-times-circle" 
+            class="p-button-danger mr-2"
+          >
+          </button>
+
+        </td>
+    </tr>
+  </ng-template>
+  <!--End Cuerpo-->
+</p-table>
+
+</div>
+
+<p-dialog class="modal" [style]="{width: '70vw'}" [header]="dialogTitle | titlecase" [(visible)]="saveOrUpdateDialog">
+  <h5>{{dialogTitle | titlecase}}</h5>
+  <form class="mb-4" (ngSubmit)="save($event)">
+
+    <div class="formgrid grid">
+
+      <div class="field col">
+        <label>Nombre</label>
+        <div class="p-inputgroup">
+  
+          <input autocomplete="off" type="text" name="nombre" [value]="producto.nombre" [(ngModel)]="producto.nombre" pInputText placeholder="Nombre">         
+        </div>
+      </div>
+
+      <div class="field col">
+
+        <label>Categoria</label>
+        <div class="p-inputgroup">
+          
+          <p-treeSelect
+            (onNodeSelect)="onSelect($event)"
+            [(ngModel)]="nodeSelected"
+            [ngModelOptions]="{standalone: true}"
+            [filter]="true" [filterInputAutoFocus]="true"
+            [options]="nodes" 
+            placeholder="Categoria"
+          >
+          </p-treeSelect>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <div class="formgrid grid">
+
+      <div class="field col">
+        <label>Precio</label>
+        <div class="p-inputgroup">
+  
+          <input autocomplete="off" type="number" step="0.01" name="precio" [value]="producto.precio" [(ngModel)]="producto.precio" pInputText placeholder="Precio">         
+        </div>
+      </div>
+
+      <div class="field col">
+        <label>Imagen</label>
+        <div class="p-inputgroup">
+  
+          <input (change)="processFile($event)" autocomplete="off" type="file" name="imagen" pInputText placeholder="Imagen">
+          <div *ngIf="producto.imagen != undefined && producto.imagen != ''" class="ms-1">
+            <span class="d-block">actual:</span>
+            <img class="thumb-minus" [src]="imagePath + '/' + producto.imagen" alt="">
+          </div>         
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <div class="formgrid grid">
+
+
+      <div class="field col">
+        <label>Cantidad</label>
+        <div class="p-inputgroup">
+  
+          <input autocomplete="off" type="number" name="existencia" [value]="producto.cantidad" [(ngModel)]="producto.cantidad" pInputText placeholder="Cantidad">         
+        </div>
+      </div>
+
+      <div class="field col">
+        <label>Descripcion</label>
+        <div class="p-inputgroup">
+  
+          <input autocomplete="off" type="text" name="descripcion" [value]="producto.descripcion" [(ngModel)]="producto.descripcion" pInputText placeholder="Descripcion">         
+        </div>
+      </div>
+
+
+    </div>
+    <div class="field grid">
+  
+      <div class="col">
+        <button [type]="'submit'" pButton pRipple type="button" label="Guardar" icon="pi pi-save" class="p-button-success"></button>  
+      </div>
+  
+    </div>
+
+
+  </form>
+</p-dialog>

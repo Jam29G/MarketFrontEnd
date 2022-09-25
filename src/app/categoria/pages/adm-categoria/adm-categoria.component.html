@@ -1,0 +1,88 @@
+
+<h2>Administrar categorias</h2>
+
+<div class="table">
+  <!--Tabla-->
+  <p-table #dt
+  [value]="categorias"
+  responsiveLayout="scroll" 
+  [rowHover]="true"
+  [paginator]="true"
+  [rows]="5"
+  [rowsPerPageOptions]="[5,10,15]"
+  [globalFilterFields]="['id','nombre']"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+  [(selection)]="selectedCategorias"
+  dataKey="id"
+  class="table"
+  > 
+
+    <!--Caption-->
+    <ng-template pTemplate="caption">
+      <div class="table-header">
+          <h2>Lista de categorias</h2>
+          <div>
+            <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"  placeholder="Buscar" />
+            </span>
+          </div>
+      </div>
+      <button icon="pi pi-plus-circle" pButton pRipple type="button" (click)="showDialog('crear')" label="Agregar"></button>
+    </ng-template>
+
+    <!--Header-->
+    <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th pSortableColumn="nombre">
+            Nombre
+            <p-sortIcon field="name"></p-sortIcon>
+            <p-columnFilter type="text" field="nombre" display="menu" class="ml-auto"></p-columnFilter>
+          </th>
+          <th>Acciones</th>
+        </tr>
+    </ng-template>
+
+    <!--Cuerpo-->
+    <ng-template pTemplate="body" let-categoria>
+        <tr>
+            <td>{{categoria.id}}</td>
+            <td>{{categoria.nombre}}</td>
+            <td>
+              <button pButton pRipple type="button" (click)="showDialog('actualizar', categoria.id)"  icon="pi pi-pencil" class="p-button-primary mr-2"></button>
+
+              <button pButton pRipple type="button" (click)="delete(categoria.id)" icon="pi pi-times-circle" class="p-button-danger"></button>
+
+            </td>
+        </tr>
+    </ng-template>
+
+  </p-table>
+</div>
+
+
+<p-dialog class="modal" [style]="{width: '70vw'}" [header]="dialogTitle | titlecase" [(visible)]="saveOrUpdateDialog">
+  <h5>{{dialogTitle | titlecase}}</h5>
+
+  <form (ngSubmit)="save()">
+    <div class="formgrid grid">
+
+      <div class="field col">
+        <div class="p-inputgroup">
+  
+          <input autocomplete="off" type="text" name="nombre" [value]="categoria.nombre" [(ngModel)]="categoria.nombre" pInputText placeholder="Categoria">         
+        </div>
+      </div>
+  
+    </div>
+    <div class="field grid">
+  
+      <div class="col">
+        <button [type]="'submit'" pButton pRipple type="button" label="Guardar" icon="pi pi-save" class="p-button-success"></button>  
+      </div>
+  
+    </div>
+  </form>
+  
+</p-dialog>

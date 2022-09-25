@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+  background-color: var(--surface-b);
+  font-family: var(--font-family);
+}
+
+
+.p-treeselect-label-container, .p-multiselect-label-container {
+  width: 100% !important;
+}
+.p-treeselect, .p-multiselect {
+  width: 100% !important;
+}
+.p-treeselect-items-wrapper {
+  max-height: 130px !important;
+}
