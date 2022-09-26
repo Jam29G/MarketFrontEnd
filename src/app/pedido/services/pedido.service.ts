@@ -8,6 +8,9 @@ import { Observable } from 'rxjs';
 })
 export class PedidoService {
 
+  detallePedidos: Pedido[] = [];
+  totalPedido: number = 0;
+
   constructor(private http: HttpClient) { }
 
   private apiUrl: string = "http://localhost:8080/api";
@@ -15,6 +18,17 @@ export class PedidoService {
   getAll(auth_token: string): Observable<Pedido[]> {
 
     const url = `${this.apiUrl}/pedidos`;
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${auth_token}`
+    })
+
+    return this.http.get<Pedido[]>(url, {headers});
+    
+  }
+
+  getByUserId(auth_token: string, id: number): Observable<Pedido[]> {
+
+    const url = `${this.apiUrl}/pedidos/usuario/${id}`;
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${auth_token}`
     })

@@ -51,7 +51,7 @@ export class AdmCategoriaComponent implements OnInit {
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: 'Error al acceder',
+            title: 'Error al crear el usuario: ' + err.error.message,
             showConfirmButton: false,
             timer: 1500
           })
@@ -82,7 +82,7 @@ export class AdmCategoriaComponent implements OnInit {
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: 'Error al guardar la categoria',
+            title: 'Error al guardar la categoria: ' + err.error.message,
             showConfirmButton: false,
             timer: 1500
           })
@@ -109,7 +109,7 @@ export class AdmCategoriaComponent implements OnInit {
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: 'Error al actualizar la categoria',
+            title: 'Error al actualizar la categoria: ' + err.error.message,
             showConfirmButton: false,
             timer: 1500
           })
@@ -142,7 +142,7 @@ export class AdmCategoriaComponent implements OnInit {
           this.categoria.nombre = categoria.nombre;
         },
         error: (err) => {
-          console.log("Ocurrio un error", err);
+          //console.log("Ocurrio un error", err);
         }
       })
     }
@@ -170,7 +170,7 @@ export class AdmCategoriaComponent implements OnInit {
             Swal.fire('Eliminado correctamente', '', 'success')
           },
           error: (err) => {
-            Swal.fire('Error al eliminar ' + err.message, '', 'error')
+            Swal.fire('Error al eliminar ' + err.error.message)
           }
         })
 

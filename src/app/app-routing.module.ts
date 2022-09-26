@@ -10,6 +10,8 @@ import { CarComponent } from './pedido/pages/car/car.component';
 import { PedidoService } from './pedido/services/pedido.service';
 import { AdmPedidosComponent } from './pedido/pages/adm-pedidos/adm-pedidos.component';
 import { AdminUsuarioComponent } from './usuario/pages/admin-usuario/admin-usuario.component';
+import { RegisterComponent } from './auth/pages/register/register.component';
+import { MisComprasComponent } from './pedido/pages/mis-compras/mis-compras.component';
 
 
 const routes: Routes = [
@@ -35,6 +37,10 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
+    path: 'register',
+    component: RegisterComponent
+  },
+  {
     path: 'carrito',
     component: CarComponent
     
@@ -42,6 +48,11 @@ const routes: Routes = [
   {
     path: 'pedidos',
     component: AdmPedidosComponent
+    
+  },
+  {
+    path: 'mis-compras',
+    component: MisComprasComponent
     
   }
 

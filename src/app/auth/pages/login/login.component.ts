@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit {
         this.authService.token = response.access_token;
         this.authService.roles = payload.authorities;
         this.authService.isAdmin = this.authService.roles.findIndex( (el) => el == "ROLE_ADMIN" ) != -1 ? true : false;
-        console.log(this.authService.isAdmin);
 
         if(this.authService.isAdmin) {
           this.router.navigate(['./pedidos'])

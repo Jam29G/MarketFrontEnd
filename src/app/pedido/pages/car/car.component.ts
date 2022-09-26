@@ -26,10 +26,16 @@ export class CarComponent implements OnInit {
   totalPedido: number = 0;
 
   ngOnInit(): void {
-    if(localStorage.getItem("detallePedidos") != null && this.authService.auth != null ) {
-      this.detallePedidos = JSON.parse(localStorage.getItem("detallePedidos")!);
-      this.totalPedido = JSON.parse(localStorage.getItem("totalPedido")!);
-  }
+
+    if(this.authService.auth == undefined) {
+      this.router.navigate(['./']);
+      return
+    }
+
+    if(this.authService.auth != undefined && this.authService.auth != null ) {
+      this.detallePedidos = this.pedidoService.detallePedidos;
+      this.totalPedido = this.pedidoService.totalPedido;
+    }
   }
 
   save() {
@@ -61,15 +67,16 @@ export class CarComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500
             })
-            localStorage.removeItem("detallePedidos");
-            localStorage.removeItem("totalPedido");
-            console.log(pedido)
+            this.pedidoService.detallePedidos = [];
+            this.pedidoService.totalPedido = 0;
+            //localStorage.removeItem("detallePedidos");
+            //localStorage.removeItem("totalPedido");
           },
           error: (err) => {
             Swal.fire({
               position: 'top-end',
               icon: 'success',
-              title: "Error al enviar el pedido",
+              title: "Error al enviar el pedido: " + err.error.message,
               showConfirmButton: false,
               timer: 1500
             })
@@ -83,14 +90,16 @@ export class CarComponent implements OnInit {
   }
 
   deleteDetalle(id: number) {
-    let index = this.detallePedidos.findIndex(element => element.id == id);
+    let index = id;
 
     this.totalPedido -= this.detallePedidos[index].producto!.precio! * this.detallePedidos[index].cantidad!;
     this.detallePedidos.splice(index, 1);
     this.detallePedidos = [...this.detallePedidos];
 
-    localStorage.setItem("detallePedidos",  JSON.stringify(this.detallePedidos));
-    localStorage.setItem("totalPedido",  JSON.stringify(this.totalPedido));
+    this.pedidoService.detallePedidos = this.detallePedidos;
+    this.pedidoService.totalPedido = this.totalPedido;
+    //localStorage.setItem("detallePedidos",  JSON.stringify(this.detallePedidos));
+    //localStorage.setItem("totalPedido",  JSON.stringify(this.totalPedido));
   }
 
 }

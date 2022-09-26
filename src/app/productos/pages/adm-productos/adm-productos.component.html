@@ -1,6 +1,7 @@
-<h2>Administrar productos</h2>
 
-<div class="table">
+
+<div class="table w-11 mx-auto">
+  <h2>Administrar productos</h2>
   <!--Tabla-->
   <p-table #dt
   [value]="productos"
@@ -32,7 +33,7 @@
       <button icon="pi pi-plus-circle" class="d-block me-3" pButton pRipple type="button" (click)="showDialog('crear')" label="Agregar"></button>
       <div>
         <p-checkbox [(ngModel)]="mostrarInactivos" (onChange)="mostrarProductos()" class="mt-3 mr-2" [binary]="true" inputId="binary"></p-checkbox>
-        <label for="binary">Ver inactivos</label>
+        <label for="binary">Deshabilitados</label>
       </div>
     </div>
 
@@ -55,10 +56,10 @@
         <p-sortIcon field="precio"></p-sortIcon>
         <p-columnFilter type="numeric" currency="USD" field="precio" display="menu" class="ml-auto"></p-columnFilter>
       </th>
-      <th pSortableColumn="existencia">
+      <th pSortableColumn="cantidad">
         Cantidad
-        <p-sortIcon field="existencia"></p-sortIcon>
-        <p-columnFilter type="numeric" field="existencia" display="menu" class="ml-auto"></p-columnFilter>
+        <p-sortIcon field="cantidad"></p-sortIcon>
+        <p-columnFilter type="numeric" field="cantidad" display="menu" class="ml-auto"></p-columnFilter>
       </th>
       <th pSortableColumn="categoria">
         Categoria
@@ -102,8 +103,8 @@
             *ngIf="mostrarInactivos"
             pButton pRipple type="button" 
             (click)="restore(producto.id)" 
-            icon="pi pi-times-circle" 
-            class="p-button-danger mr-2"
+            label="Restaurar"
+            class="p-button-success mr-2"
           >
           </button>
 

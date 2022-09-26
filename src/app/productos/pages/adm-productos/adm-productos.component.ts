@@ -56,7 +56,7 @@ export class AdmProductosComponent implements OnInit {
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: err.message,
+            title: "Error al obtener los productos: " + err.error.message,
             showConfirmButton: false,
             timer: 1500
           })
@@ -97,7 +97,7 @@ export class AdmProductosComponent implements OnInit {
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: 'Error al acceder',
+            title: 'Error al obtener las categorias: ' + err.error.message,
             showConfirmButton: false,
             timer: 1500
           })
@@ -109,7 +109,6 @@ export class AdmProductosComponent implements OnInit {
 
 
   save(event: any) {
-    console.log(this.nodeSelected.data);
     this.producto.categoria = {
       id: 0,
       nombre: ""
@@ -141,7 +140,7 @@ export class AdmProductosComponent implements OnInit {
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: "Error al guardar el producto",
+            title: "Error al guardar el producto: " + + err.error.message,
             showConfirmButton: false,
             timer: 1500
           })
@@ -150,7 +149,6 @@ export class AdmProductosComponent implements OnInit {
       })
     } else {
       this.producto.categoria.nombre = this.nodeSelected.label;
-      console.log(this.producto);
       this.productoService.update(this.authService.token, this.producto, this.imagen).subscribe({
         next: (producto) => {
           let index: number = this.productos.findIndex(element => element.id == producto.id);
@@ -172,7 +170,7 @@ export class AdmProductosComponent implements OnInit {
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: "Error al actualizar el producto",
+            title: "Error al actualizar el producto: " +  err.error.message,
             showConfirmButton: false,
             timer: 1500
           })
@@ -205,10 +203,10 @@ export class AdmProductosComponent implements OnInit {
             this.productos.splice(index, 1);
             this.productos = [...this.productos];
 
-            Swal.fire('Deshabilitado correctamente', '', 'success')
+            Swal.fire('Habilitado correctamente', '', 'success')
           },
           error: (err) => {
-            Swal.fire('Error al deshabilitar el producto ')
+            Swal.fire('Error al Habilitar el producto ')
           }
         })
 

@@ -4,6 +4,7 @@ import { TiendaComponent } from './pages/tienda/tienda.component';
 import { CarComponent } from './pages/car/car.component';
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 import { AdmPedidosComponent } from './pages/adm-pedidos/adm-pedidos.component';
+import { MisComprasComponent } from './pages/mis-compras/mis-compras.component';
 
 
 
@@ -11,7 +12,8 @@ import { AdmPedidosComponent } from './pages/adm-pedidos/adm-pedidos.component';
   declarations: [
     TiendaComponent,
     CarComponent,
-    AdmPedidosComponent
+    AdmPedidosComponent,
+    MisComprasComponent
   ],
   imports: [
     CommonModule,
@@ -20,7 +22,8 @@ import { AdmPedidosComponent } from './pages/adm-pedidos/adm-pedidos.component';
   exports: [
     CarComponent,
     TiendaComponent,
-    AdmPedidosComponent
+    AdmPedidosComponent,
+    MisComprasComponent
   ]
 })
 export class PedidoModule { }

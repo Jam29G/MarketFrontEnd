@@ -39,7 +39,6 @@ export class MenuComponent implements OnInit {
       icon: "pi pi-power-off",
       command: () => {
         this.authService.auth = undefined;
-        console.log(this.authService.auth);
         this.router.navigate(['./login']);
       }
     },
@@ -55,6 +54,11 @@ export class MenuComponent implements OnInit {
       label: "Iniciar sesion",
       icon: 'pi pi-users',
       routerLink: 'login',
+    },
+    {
+      label: "Registrarse",
+      icon: 'pi pi-user-plus',
+      routerLink: 'register',
     },
   ]
 
@@ -73,6 +77,7 @@ export class MenuComponent implements OnInit {
     {
       label: "Mis compras",
       icon: "pi pi-shopping-bag",
+      routerLink: 'mis-compras'
 
     },
     {
@@ -80,7 +85,6 @@ export class MenuComponent implements OnInit {
       icon: "pi pi-power-off",
       command: () => {
         this.authService.auth = undefined;
-        console.log(this.authService.auth);
         this.router.navigate(['./login']);
       }
     },

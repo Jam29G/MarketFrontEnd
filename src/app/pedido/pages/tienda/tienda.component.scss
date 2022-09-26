@@ -5,7 +5,7 @@
   }
 
   .main-container {
-    width: 90%;
+    width: 96%;
     margin-left: auto;
     margin-right: auto;
     box-shadow: none !important;
@@ -79,7 +79,7 @@
   
   .product-grid-item {
       margin: .5em;
-      border: 1px solid #304562;
+      border: 1px solid var(--surface-d);
   
       .product-grid-item-top,
       .product-grid-item-bottom {

@@ -1,7 +1,7 @@
 
 
 <div class="table w-11 mx-auto">
-  <h2>Administrar pedidos</h2>
+  <h2>Mis Compras</h2>
 
   <p-table 
   #dt
@@ -30,51 +30,6 @@
           </div>
       </div>
       
-      <div class="d-flex align-items-center">
-
-        <div  class="mt-2">
-          <p-radioButton 
-            class="mr-2" 
-            label="Recibidos" 
-            name="estado" 
-            value="R" 
-            [(ngModel)]="selectedValue"
-            (onClick)="getByState()"
-          >
-          </p-radioButton>
-
-          <p-radioButton 
-            class="mr-2" 
-            label="Enviados" 
-            name="estado" 
-            value="E" 
-            [(ngModel)]="selectedValue"
-            (onClick)="getByState()"
-          >
-          </p-radioButton>
-
-          <p-radioButton 
-          class="mr-2" 
-          label="Finalizado" 
-          name="estado" 
-          value="F" 
-          [(ngModel)]="selectedValue"
-          (onClick)="getByState()"
-        >
-        </p-radioButton>
-
-          <p-radioButton 
-            label="Anulados" 
-            name="estado" 
-            value="A" 
-            [(ngModel)]="selectedValue"
-            (onClick)="getByState()"
-          >
-          </p-radioButton>
-
-
-        </div>
-      </div>
     </ng-template>
 
     <!--Header-->
@@ -87,19 +42,19 @@
           <p-columnFilter type="text" field="usuario.nombre" display="menu" class="ml-auto"></p-columnFilter>
         </th>
         <th pSortableColumn="fechaPedido">
-          Fecha
+          Fecha del pedido
           <p-sortIcon field="fechaPedido"></p-sortIcon>
           <p-columnFilter type="date" field="fechaPedido" display="menu" class="ml-auto"></p-columnFilter>
         </th>
-        <th *ngIf="selectedValue == 'F'" pSortableColumn="fechaEntrega">
+        <th pSortableColumn="fechaEntrega">
           Fecha de entrega
           <p-sortIcon field="fechaEntrega"></p-sortIcon>
           <p-columnFilter type="date" field="fechaEntrega" display="menu" class="ml-auto"></p-columnFilter>
         </th>
+        <th>Estado</th>
         <th pSortableColumn="usuario.direccion">
           Dirección
-          <p-sortIcon field="usuario.direccion"></p-sortIcon>
-          <p-columnFilter type="text" field="usuario.direccion" display="menu" class="ml-auto"></p-columnFilter>
+          
         </th>
         <th pSortableColumn="monto">
           Monto
@@ -117,7 +72,8 @@
           <td>{{pedido.id}}</td>
           <td>{{pedido.usuario!.nombre}} {{pedido.usuario!.apellido}}</td>
           <td>{{pedido.fechaPedido}}</td>
-          <td *ngIf="selectedValue == 'F'" >{{pedido.fechaEntrega}}</td>
+          <td>{{pedido.fechaEntrega != undefined ? pedido.fechaEntrega : 'Por definir' }}</td>
+          <td>{{printEstado(pedido.estado)}}</td>
           <td>{{pedido.usuario.direccion}}</td>
           <td>{{pedido.monto | currency}}</td>
           <td>
@@ -129,39 +85,6 @@
               label="Detalles"
               class="mr-2 p-button-sm"
               (click)="showDialog(pedido.id)"
-            >
-            </button>
-
-            <button 
-              pButton 
-              pRipple 
-              type="button" 
-              label="Enviar"
-              class="p-button-success mr-2 p-button-sm"
-              (click)="changeStateAlert(pedido.id, 'E', 'enviado')"
-              *ngIf="selectedValue == 'R'"
-            >
-            </button>
-
-            <button 
-              pButton 
-              pRipple 
-              type="button" 
-              label="Finalizar"
-              class="p-button-success mr-2 p-button-sm"
-              (click)="changeStateAlert(pedido.id, 'F', 'finalizado')"
-              *ngIf="selectedValue == 'E'"
-            >
-            </button>
-
-            <button 
-              pButton 
-              pRipple 
-              type="button" 
-              label="Anular"
-              class="p-button-secondary p-button-sm"
-              (click)="changeStateAlert(pedido.id, 'A', 'anulado')"
-              *ngIf="selectedValue == 'R'"
             >
             </button>
 
@@ -181,7 +104,7 @@
       <p>Fecha de pedido: <b>{{pedido.fechaPedido}}</b> </p>
     </div>
     <div>
-      <p *ngIf="selectedValue == 'F'" >Fecha de finalizacion: <b>{{pedido.fechaEntrega}}</b> </p>
+      <p *ngIf="pedido.estado == 'F'" >Fecha de finalizacion: <b>{{pedido.fechaEntrega}}</b> </p>
       <p>N° de pedido: <b>{{pedido.id}}</b> </p>
     </div>
   </div>

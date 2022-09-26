@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -13,6 +13,11 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { ProductosModule } from './productos/productos.module';
 import { PedidoModule } from './pedido/pedido.module';
 import { RolModule } from './rol/rol.module';
+
+//Cambiar el locale de la app
+import localeEs from '@angular/common/locales/es-SV';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeEs);
 
 @NgModule({
   declarations: [

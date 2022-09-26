@@ -6,6 +6,7 @@ import { Producto } from '../../../productos/interfaces/Producto';
 import { DetallesPedido } from '../../interfaces/Pedido';
 import { ProductosService } from '../../../productos/services/productos.service';
 import Swal from 'sweetalert2';
+import { PedidoService } from '../../services/pedido.service';
 
 @Component({
   selector: 'app-tienda',
@@ -17,7 +18,8 @@ export class TiendaComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private router: Router,
-    private productoService: ProductosService
+    private productoService: ProductosService,
+    public pedidoService: PedidoService
   ) { }
 
   productos: Producto[] = [];
@@ -45,17 +47,22 @@ export class TiendaComponent implements OnInit {
         Swal.fire({
           position: 'top-end',
           icon: 'error',
-          title: 'Error al consultar los productos',
+          title: 'Error al consultar los productos: ' + err.error.message,
           showConfirmButton: false,
           timer: 1500
         })
       }
     })
 
-    if(localStorage.getItem("detallePedidos") != null && this.authService.auth != null ) {
+    if(this.authService.auth != undefined && this.authService.auth != null ) {
+      this.detallePedidos = this.pedidoService.detallePedidos;
+      this.totalPedido = this.pedidoService.totalPedido;
+    }
+
+    /*if(localStorage.getItem("detallePedidos") != null && this.authService.auth != null ) {
         this.detallePedidos = JSON.parse(localStorage.getItem("detallePedidos")!);
         this.totalPedido = JSON.parse(localStorage.getItem("totalPedido")!);
-    }
+    } */
 
 
   }
@@ -73,7 +80,6 @@ export class TiendaComponent implements OnInit {
 
     this.productos[index].cantidadPedido = undefined;
 
-    console.log(this.productos[index]);
 
     detalle.producto  = {}
 
@@ -83,8 +89,18 @@ export class TiendaComponent implements OnInit {
     detalle.precioUnitario = this.productos[index].precio;
 
     this.detallePedidos.push(detalle);
-    localStorage.setItem("detallePedidos",  JSON.stringify(this.detallePedidos));
-    localStorage.setItem("totalPedido",  JSON.stringify(this.totalPedido));
+    this.pedidoService.detallePedidos = this.detallePedidos;
+    this.pedidoService.totalPedido = this.totalPedido;
+
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: "Añadido al carrito",
+      showConfirmButton: false,
+      timer: 1500
+    })
+    //localStorage.setItem("detallePedidos",  JSON.stringify(this.detallePedidos));
+    //localStorage.setItem("totalPedido",  JSON.stringify(this.totalPedido));
   }
 
 }

@@ -14,8 +14,8 @@ export class UsuarioService {
 
   private apiUrl: string = "http://localhost:8080/api";
 
-  getAll(auth_token: string): Observable<Usuario[]> {
-    const url = `${this.apiUrl}/usuarios`;
+  getAll(auth_token: string, estado: boolean): Observable<Usuario[]> {
+    const url = `${this.apiUrl}/usuarios?estado=${estado}`;
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${auth_token}`
@@ -45,6 +45,12 @@ export class UsuarioService {
     return this.http.post<Usuario>(url, usuario, {headers: headers});
   }
 
+  createUser(usuario:Usuario): Observable<Usuario> {
+    const url = `${this.apiUrl}/usuarios/user`;
+
+    return this.http.post<Usuario>(url, usuario);
+  }
+
   update(auth_token: string, usuario:Usuario, id: number): Observable<Usuario> {
     const url = `${this.apiUrl}/usuarios/${id}`;
 
@@ -55,6 +61,14 @@ export class UsuarioService {
     return this.http.put<Usuario>(url, usuario, {headers: headers})
 
 
+  }
+
+  restore(auth_token: string, id: number): Observable<any> {
+    const url = `${this.apiUrl}/usuarios/restore/${id}`;
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${auth_token}`
+    })
+    return this.http.put<any>(url, undefined, {headers: headers})
   }
 
   delete(auth_token: string, id: number): Observable<any> {

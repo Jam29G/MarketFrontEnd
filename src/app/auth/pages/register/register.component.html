@@ -1,0 +1,80 @@
+<div class="login-container w-8">
+  <form (ngSubmit)="register()">
+
+    <div class="text-center ">
+      <i class="pi pi-user login-icon"></i>
+    </div>
+
+    <div class="formgrid grid mt-5">
+
+      <div class="field col">
+        <div class="p-inputgroup">
+  
+          <input type="text" name="nombre" 
+          class=""
+          pInputText placeholder="Nombre" 
+          [(ngModel)]="usuario.nombre" >         
+        </div>
+      </div>
+      
+      <div class="field col">
+        <div class="p-inputgroup">
+  
+          <input type="text" name="apellido" 
+          class=""
+          pInputText placeholder="Apellido" 
+          [(ngModel)]="usuario.apellido" >         
+        </div>
+      </div>
+  
+    </div>
+
+    <div class="formgrid grid mt-2">
+
+      <div class="field col">
+        <div class="p-inputgroup">
+  
+          <input type="text" name="correo" 
+          class=""
+          pInputText placeholder="Correo" 
+          [(ngModel)]="usuario.correo" >         
+        </div>
+      </div>
+
+      <div class="field col">
+        <div class="p-inputgroup">
+  
+          <input class="" autocomplete="off" type="password" name="password" pInputText placeholder="Password" [(ngModel)]="usuario.password" >         
+        </div>
+      </div>
+  
+    </div>
+
+    <div class="formgrid grid mt-2">
+
+      <div class="field col">
+        <div class="p-inputgroup">
+  
+          <input type="text" name="direccion" 
+          class=""
+          pInputText placeholder="Direccion" 
+          [(ngModel)]="usuario.direccion" >         
+        </div>
+      </div>
+  
+    </div>
+
+    
+
+    <div class="flex flex-row flex-wrap justify-content-center mt-4">
+      <button [type]="'submit'"
+       pButton pRipple 
+       type="button" 
+       label="Registrarse" 
+       icon="pi pi-sign-in" 
+       class="p-button-rounded w-4 p-button-lg"></button>
+    </div>
+    
+  </form>
+
+</div>

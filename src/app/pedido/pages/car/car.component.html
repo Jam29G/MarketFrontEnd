@@ -1,5 +1,5 @@
-<div class="mt-4">
-  <button [type]="'submit'" [disabled]="detallePedidos.length < 1" (click)="save()" pButton pRipple type="button" label="Realizar pedido" icon="pi pi-save" class="p-button-success"></button>
+<div class="mt-4 w-9 mx-auto">
+  <button [type]="'submit'" [disabled]="detallePedidos.length < 1" (click)="save()" pButton pRipple type="button" label="Realizar pedido" icon="pi pi-save" class="p-button-success mb-2"></button>
   <p-table [value]="detallePedidos" responsiveLayout="scroll">
       
     <ng-template pTemplate="header">
@@ -11,7 +11,7 @@
             <th>Eliminar</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-detalle >
+    <ng-template pTemplate="body" let-detalle let-rowIndex="rowIndex" >
         <tr>
             <td>{{detalle.producto?.nombre}}</td>
             <td>{{detalle.producto?.precio | currency:"USD":"symbol" }}</td>
@@ -20,7 +20,7 @@
             <td>
               <button 
               pButton pRipple type="button" 
-              (click)="deleteDetalle(detalle.id)" 
+              (click)="deleteDetalle(rowIndex)" 
               icon="pi pi-times-circle" 
               class="p-button-danger"
               >

@@ -1,7 +1,8 @@
 
-<h2>Administrar categorias</h2>
 
-<div class="table">
+
+<div class="table w-11 mx-auto">
+  <h2>Administrar categorias</h2>
   <!--Tabla-->
   <p-table #dt
   [value]="categorias"
@@ -37,7 +38,7 @@
           <th>ID</th>
           <th pSortableColumn="nombre">
             Nombre
-            <p-sortIcon field="name"></p-sortIcon>
+            <p-sortIcon field="nombre"></p-sortIcon>
             <p-columnFilter type="text" field="nombre" display="menu" class="ml-auto"></p-columnFilter>
           </th>
           <th>Acciones</th>

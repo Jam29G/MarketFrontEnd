@@ -30,6 +30,8 @@ export class AdmPedidosComponent implements OnInit {
 
   dialogTitle: string = "Detalles de venta";
 
+  imagePath = "http://localhost:8080/api/productos/image";
+
   showDetails = false;
 
   showDialog(id: number) {
@@ -44,7 +46,6 @@ export class AdmPedidosComponent implements OnInit {
     this.pedidoService.changeState(this.authService.token, id, estado).subscribe({
       next: (res) => {
         let index: number = this.pedidos.findIndex( element => element.id == res.id );
-        console.log(res);
         this.pedidos.splice(index, 1);
         this.pedidos = [...this.pedidos];
 
@@ -62,7 +63,7 @@ export class AdmPedidosComponent implements OnInit {
         Swal.fire({
           position: 'top-end',
           icon: 'error',
-          title: "Ocurrio un error",
+          title: "Ocurrio un error: " + err.error.message,
           showConfirmButton: false,
           timer: 1500
         })
@@ -98,7 +99,7 @@ export class AdmPedidosComponent implements OnInit {
         Swal.fire({
           position: 'top-end',
           icon: 'error',
-          title: 'Error al obtener las ordenes',
+          title: 'Error al obtener las ordenes: ' + err.error.message,
           showConfirmButton: false,
           timer: 1500
         })
@@ -113,7 +114,6 @@ export class AdmPedidosComponent implements OnInit {
     this.pedidoService.getAll(this.authService.token).subscribe({
       next: (pedidos) => {
         this.pedidos = pedidos;
-        console.log(this.pedidos);
       },
       error: (err) => {
         if(err.status == 403 || err.status == 401) {
@@ -130,7 +130,7 @@ export class AdmPedidosComponent implements OnInit {
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: 'Error al acceder',
+            title: 'Error al obtener los pedidos: ' + err.error.message,
             showConfirmButton: false,
             timer: 1500
           })

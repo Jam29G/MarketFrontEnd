@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './pages/login/login.component';
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 import { FormsModule } from '@angular/forms';
+import { RegisterComponent } from './pages/register/register.component';
 
 
 
 @NgModule({
   declarations: [
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,
@@ -16,7 +18,8 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   exports: [
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ]
 })
 export class AuthModule { }

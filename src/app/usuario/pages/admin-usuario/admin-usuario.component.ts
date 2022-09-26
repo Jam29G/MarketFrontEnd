@@ -25,6 +25,8 @@ export class AdminUsuarioComponent implements OnInit {
 
   public selectedUsuario: Usuario[] = [];
 
+  mostrarInactivos = false;
+
   dialogTitle: string = "crear"
 
   saveOrUpdateDialog = false;
@@ -38,9 +40,12 @@ export class AdminUsuarioComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.usuarioService.getAll(this.authService.token).subscribe({
+    this.usuarioService.getAll(this.authService.token, true).subscribe({
       next: (usuarios) => {
+        let index = usuarios.findIndex(element => element.id == this.authService.auth.id);
+        usuarios.splice(index, 1);
         this.usuarios = usuarios;
+        
       },
       error: (err) => {
         if(err.status == 403 || err.status == 401) {
@@ -57,7 +62,7 @@ export class AdminUsuarioComponent implements OnInit {
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: 'Error al obtener los usuarios',
+            title: 'Error al obtener los usuarios: ' + + err.error.message,
             showConfirmButton: false,
             timer: 1500
           })
@@ -86,7 +91,7 @@ export class AdminUsuarioComponent implements OnInit {
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: 'Error al obtener los roles',
+            title: 'Error al obtener los roles: ' + err.error.message,
             showConfirmButton: false,
             timer: 1500
           })
@@ -95,6 +100,76 @@ export class AdminUsuarioComponent implements OnInit {
 
     })
     
+  }
+
+  restore(id: number) {
+    Swal.fire({
+      title: '¿Seguro que quieres habilitar el usuario?',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Habilitar',
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        this.usuarioService.restore(this.authService.token, id).subscribe({
+          next: (response) => {
+            let index: number = this.usuarios.findIndex( element => element.id == id );
+            this.usuarios.splice(index, 1);
+            this.usuarios = [...this.usuarios];
+
+            Swal.fire('Habilitado correctamente', '', 'success')
+          },
+          error: (err) => {
+            Swal.fire('Error al Habilitar el producto: ' + err.error.message)
+          }
+        })
+
+        
+        
+      } else if (result.isDenied) {
+        Swal.fire('Accion cancelada')
+      }
+    })
+  }
+
+  mostrarUsuarios() {
+    if(!this.mostrarInactivos) {
+
+      this.usuarioService.getAll(this.authService.token, true).subscribe({
+        next: (usuarios) => {
+          let index = usuarios.findIndex(element => element.id == this.authService.auth.id);
+          usuarios.splice(index, 1);
+          this.usuarios = [...usuarios];
+        },
+        error: (err) => {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Error al consultar los productos: ' + err.error.message,
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+      })
+
+    } else {
+      this.usuarioService.getAll(this.authService.token, false).subscribe({
+        next: (usuarios) => {
+          this.usuarios = [...usuarios];
+        },
+        error: (err) => {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Error al consultar los usuarios: ' + err.error.message,
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+      })
+    }
   }
 
   save(): void {
@@ -129,24 +204,51 @@ export class AdminUsuarioComponent implements OnInit {
         Swal.fire({
           position: 'top-end',
           icon: 'error',
-          title: 'Error al guardar el usuario',
+          title: 'Error al guardar el usuario: ' + err.error.message,
           showConfirmButton: false,
           timer: 1500
         })
-        console.log(err);
       }
     }) 
   }
 
   showDialog(): void {
     this.usuario = {};
-    this.dialogTitle = "Crear un nuevo usuario";
+    this.dialogTitle = "crear un nuevo usuario";
 
     this.saveOrUpdateDialog = true;
   }
 
-  delete(): void {
+  delete(id: number): void {
+    Swal.fire({
+      title: '¿Seguro que quieres eliminar el usuario?',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Borrar',
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
 
+      if (result.isConfirmed) {
+
+        this.usuarioService.delete(this.authService.token,  id).subscribe({
+          next: (response) => {
+            let index: number = this.usuarios.findIndex( element => element.id == id );
+            this.usuarios.splice(index, 1);
+            this.usuarios = [...this.usuarios];
+
+            Swal.fire('Eliminado correctamente', '', 'success')
+          },
+          error: (err) => {
+            Swal.fire('Error al eliminar: ' + err.error.message)
+          }
+        })
+
+        
+        
+      } else if (result.isDenied) {
+        Swal.fire('Accion cancelada')
+      }
+    })
   }
 
 }
